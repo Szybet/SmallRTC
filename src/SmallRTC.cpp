@@ -1,4 +1,5 @@
 #include "SmallRTC.h"
+#include "esp_chip_info.h"
 
 /* SmallRTC by GuruSR (https://www.github.com/GuruSR/SmallRTC)
  * Originally forked from WatchyRTC with a variety of fixes and improvements.
