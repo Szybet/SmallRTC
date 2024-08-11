@@ -91,6 +91,8 @@
 //  #define SMALL_RTC_NO_PCF8563
 //  #define SMALL_RTC_NO_INT
 
+#define SMALL_RTC_PRAGMA_LOGS 0
+
 #include <TimeLib.h>
 
 #ifndef SMALL_RTC_NO_DS3232
@@ -98,9 +100,9 @@
 #include <DS3232RTC.h>
 
 #else
-
+#if SMALL_RTC_PRAGMA_LOGS
 #pragma message "SmallRTC: No support for DS3231M"
-
+#endif
 #endif
 
 #ifndef SMALL_RTC_NO_PCF8563
@@ -108,15 +110,21 @@
 #include <Rtc_Pcf8563.h>
 
 #else
-
+#if SMALL_RTC_PRAGMA_LOGS
 #pragma message "SmallRTC: No support for PCF8563"
-
+#endif
 #endif
 
 #ifdef SMALL_RTC_NO_INT
-
+#if SMALL_RTC_PRAGMA_LOGS
 #pragma message "SmallRTC: No support for ESP32 RTC"
+#endif
+#endif
 
+#ifdef SMALL_RTC_NO_EXT0
+#if SMALL_RTC_PRAGMA_LOGS
+#pragma message "Disabled EXT0 in SmallRTC"
+#endif
 #endif
 
 #include <Wire.h>

@@ -1135,14 +1135,14 @@ SmallRTC::atMinuteWake (uint8_t hour, uint8_t minute, bool enabled)
     }
 
 #endif
-
+#ifndef SMALL_RTC_NO_EXT0
     if (m_rtc_pin && enabled)
     {
 
         esp_sleep_enable_ext0_wakeup ((gpio_num_t)m_rtc_pin, 0);
 
     }
-
+#endif
 }
 
 
