@@ -168,7 +168,10 @@ SmallRTC::init ()
     {
 
 #endif
-        Wire.begin ();
+
+#if !defined(SMALL_RTC_NO_DS3232) || !defined(SMALL_RTC_NO_PCF8563)
+    Wire.begin();
+#endif
 
 #ifndef SMALL_RTC_NO_DS3232
         Wire.beginTransmission (RTC_DS_ADDR);
