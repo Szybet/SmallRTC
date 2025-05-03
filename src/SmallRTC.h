@@ -2,7 +2,7 @@
 #define SMALL_RTC_H
 
 /* SmallRTC by GuruSR (https://www.github.com/GuruSR/SmallRTC)
-* Originally forked from WatchyRTC with a variety of fixes and improvements.
+ * Originally forked from WatchyRTC with a variety of fixes and improvements.
  *
  * Version 1.0, January    2, 2022
  * Version 1.1, January    4, 2022 : Correct Months from 1 to 12 to 0 to 11.
@@ -83,7 +83,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
-*/
+ */
 
 // Choose your options by editing this file or adding the #defines below
 // prior to this library.
@@ -137,28 +137,26 @@
 
 #include "esp_chip_info.h"
 
-
 #define RTC_OMIT_HOUR 255
 
 #define RTC_PCF_ADDR 0x51
 
 #define RTC_DS_ADDR 0x68
 
+#define RTC_UNKNOWN 0
 
-#define    RTC_UNKNOWN 0
+#define RTC_DS3231 1
 
-#define    RTC_DS3231 1
+#define RTC_PCF8563 2
 
-#define    RTC_PCF8563 2
-
-#define    RTC_ESP32 3
+#define RTC_ESP32 3
 
 struct gsrdrifting final
 {
 
-    float drift;  // Drift value in seconds (with 2 decimal places).
+    float drift; // Drift value in seconds (with 2 decimal places).
 
-    bool fast;    // The drift is fast.
+    bool fast; // The drift is fast.
 
     double slush; // This is used to hold the leftover from above when whole
                   // numbers accumulate.
@@ -167,9 +165,7 @@ struct gsrdrifting final
     time_t begin; // Used to determine when it was started (and if calculation
                   // is happening).
     bool drifted; // Means the RTC was changed due to drift.
-
 };
-
 
 struct gsrdrift final
 {
@@ -180,105 +176,118 @@ struct gsrdrift final
                         // working/present).
     uint64_t newmin;    // Detect new minute based on last load using millis.
 
-    bool paused;        // Means something the user of this library is asking
-                        // that no drift offsets happen during this time.
-
+    bool paused; // Means something the user of this library is asking
+                 // that no drift offsets happen during this time.
 };
-
 
 class SmallRTC
 {
 
-    public:
+public:
 #ifndef SMALL_RTC_NO_DS3232
-        DS3232RTC rtc_ds;
+    DS3232RTC rtc_ds;
 
 #endif
 
 #ifndef SMALL_RTC_NO_PCF8563
-        Rtc_Pcf8563 rtc_pcf;
+    Rtc_Pcf8563 rtc_pcf;
 
 #endif
 
-    public:
-        SmallRTC ();
+public:
+    SmallRTC();
 
-        void init ();
+    void init();
 
-        void setDateTime (String datetime);
+    void setDateTime(String datetime);
 
-        void read (tmElements_t & p_tmoutput);
+    void read(tmElements_t &p_tmoutput);
 
-        void set (tmElements_t tminput);
+    void set(tmElements_t tminput);
 
-        void clearAlarm ();
+    void clearAlarm();
 
-        void nextMinuteWake (bool enabled = true);
+    void nextMinuteWake(bool enabled = true);
 
-        void atMinuteWake (uint8_t minute, bool enabled = true);
+    void atMinuteWake(uint8_t minute, bool enabled = true);
 
-        void atTimeWake (uint8_t hour, uint8_t minute, bool enabled = true);
+    void atTimeWake(uint8_t hour, uint8_t minute, bool enabled = true);
 
-        uint8_t temperature ();
+    uint8_t temperature();
 
-        uint8_t getType ();
+    uint8_t getType();
 
-        uint32_t getADCPin ();
+    uint32_t getADCPin();
 
-        uint16_t getLocalYearOffset ();
+    uint16_t getLocalYearOffset();
 
-        float getWatchyHWVer ();
+    float getWatchyHWVer();
 
-        void useESP32 (bool enforce, bool need32K = false);
+    void useESP32(bool enforce, bool need32K = false);
 
-        bool onESP32 ();
+    bool onESP32();
 
-        time_t doMakeTime (tmElements_t tminput);
+    time_t doMakeTime(tmElements_t tminput);
 
-        void doBreakTime (time_t & p_tinput, tmElements_t & p_tminout);
+    void doBreakTime(time_t &p_tinput, tmElements_t &p_tminout);
 
-        bool isOperating ();
+    bool isOperating();
 
-        float getRTCBattery (bool critical = false);
+    float getRTCBattery(bool critical = false);
 
-        void beginDrift (tmElements_t & p_tminput, bool internal = false);
+    void beginDrift(tmElements_t &p_tminput, bool internal = false);
 
-        void pauseDrift (bool pause);
+    void pauseDrift(bool pause);
 
-        void endDrift (tmElements_t & p_tminput, bool internal = false);
+    void endDrift(tmElements_t &p_tminput, bool internal = false);
 
-        uint32_t getDrift (bool internal = false);
+    uint32_t getDrift(bool internal = false);
 
-        void setDrift (uint32_t Drift, bool isFast, bool internal = false);
+    void setDrift(uint32_t Drift, bool isFast, bool internal = false);
 
-        bool isFastDrift (bool internal = false);
+    bool isFastDrift(bool internal = false);
 
-        bool isNewMinute ();
+    bool isNewMinute();
 
-        bool updatedDrift (bool internal = false);
+    bool updatedDrift(bool internal = false);
 
-        bool checkingDrift (bool internal = false);
+    bool checkingDrift(bool internal = false);
 
-        void use32K (bool active);
+    void use32K(bool active);
 
-    private:
-        void set (tmElements_t tm, bool enforce, bool internal);
+private:
+    void set(tmElements_t tm, bool enforce, bool internal);
 
-        void read (tmElements_t & tm, bool internal);
+    void read(tmElements_t &tm, bool internal);
 
-        void driftReset (time_t t, bool internal);
+    void driftReset(time_t t, bool internal);
 
-        void manageDrift (tmElements_t & tm, bool internal);
+    void manageDrift(tmElements_t &tm, bool internal);
 
-        void checkStatus (bool reset_op = false);
+    void checkStatus(bool reset_op = false);
 
-        void atMinuteWake (uint8_t hour, uint8_t minute, bool enabled = true);
+    void atMinuteWake(uint8_t hour, uint8_t minute, bool enabled = true);
 
-        bool _validateWakeup (int8_t & mins, int8_t & hours,
-                              tmElements_t & t_data, bool b_internal);
+    bool _validateWakeup(int8_t &mins, int8_t &hours,
+                         tmElements_t &t_data, bool b_internal);
 
-        String _getValue (String data, char separator, int index);
+    String _getValue(String data, char separator, int index);
+    
+    uint8_t m_rtctype;
 
+    uint32_t m_adc_pin;
+
+    bool b_operational;
+
+    float f_watchyhwver;
+
+    bool b_forceesp32;
+
+    bool b_use32K;
+
+    uint8_t m_rtc_pin;
+
+    gsrdrift __srtcdrift;
 };
 
 #endif

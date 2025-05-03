@@ -84,22 +84,6 @@
  * THE SOFTWARE.
  */
 
-RTC_DATA_ATTR uint8_t m_rtctype;
-
-RTC_DATA_ATTR uint32_t m_adc_pin;
-
-RTC_DATA_ATTR bool b_operational;
-
-RTC_DATA_ATTR float f_watchyhwver;
-
-RTC_DATA_ATTR bool b_forceesp32;
-
-RTC_DATA_ATTR bool b_use32K;
-
-RTC_DATA_ATTR uint8_t m_rtc_pin;
-
-RTC_DATA_ATTR gsrdrift __srtcdrift;
-
 SmallRTC::SmallRTC()
 {
 }
